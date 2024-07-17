@@ -1,0 +1,21 @@
+//Contains some utility functions
+func getJSON() []ImageEffect {
+	effectsPathFile := fmt.Sprintf("../data/effects.txt")
+	effectsFile, _ := os.Open(effectsPathFile)
+	reader := json.NewDecoder(effectsFile)
+
+	var images []ImageEffect
+
+	for {
+		var imageEffect ImageEffect
+		if err := reader.Decode(&imageEffect); err != nil {
+			if err == io.EOF {
+				break // End of file reached
+			}
+			log.Fatalf("error decoding JSON: %v", err)
+		}
+		images = append(images, imageEffect)
+	}
+
+	return images
+}
